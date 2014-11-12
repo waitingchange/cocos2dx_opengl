@@ -76,6 +76,10 @@ bool HelloWorld::init()
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 
+    float uColor[] = {1.0, 0.0, 0.0, 1.0};
+    GLuint uColorLocation = glGetUniformLocation(glProgram->getProgram(), "u_color");
+	glUniform4fv(uColorLocation, 1, uColor);
+
 	//for safty
 	glBindVertexArray(0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
