@@ -39,6 +39,47 @@ bool HelloWorld::init()
 	}
 	this->setGLProgram(glProgram);
 
+	//创建和绑定vao
+	glGenVertexArrays(1, &vertexVAO);
+	glBindVertexArray(vertexVAO);
+
+	//创建和绑定vbo
+	glGenBuffers(1, &vertexVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
+
+	auto size = Director::getInstance()->getWinSize();
+	float vertercies[] = {
+		0, 0,
+		size.width, 0,
+		size.width / 2, size.height
+	};
+	float color[] = {
+		0, 1, 0, 1,
+		1, 0, 0, 1,
+		0, 0, 1, 1
+	};
+
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertercies), vertercies, GL_STATIC_DRAW);
+	//获取vertex attribute "a_position"的入口点
+	GLuint positionLocation = glGetAttribLocation(glProgram->getProgram(), "a_position");
+	//打开入a_position入口点
+	glEnableVertexAttribArray(positionLocation);
+	//传递顶点数据给a_position，注意最后一个参数是数组的偏移了。
+	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+
+	//set for color
+	glGenBuffers(1, &colorVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
+
+	GLuint colorLocation = glGetAttribLocation(glProgram->getProgram(), "a_color");
+	glEnableVertexAttribArray(colorLocation);
+	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+
+	//for safty
+	glBindVertexArray(0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+
     return true;
 }
 
@@ -72,26 +113,10 @@ void HelloWorld::onDraw()
 	glProgram->use();
 	glProgram->setUniformsForBuiltins();
 
-	auto size = Director::getInstance()->getWinSize();
-	float vertervies[] = {
-		0, 0,
-		size.width, 0,
-		size.width / 2, size.height
-	};
-	float color[] = {
-		0, 1, 0, 1,
-		1, 0, 0, 1,
-		0, 0, 1, 1
-	};
-
-	GL::enableVertexAttribs(GL::VERTEX_ATTRIB_FLAG_POSITION | GL::VERTEX_ATTRIB_FLAG_COLOR);
-
-	glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_POSITION, 2, GL_FLOAT, GL_FALSE, 0, vertervies);
-	glVertexAttribPointer(GLProgram::VERTEX_ATTRIB_COLOR, 4, GL_FLOAT, GL_FALSE, 0, color);
-
+	glBindVertexArray(vertexVAO);
 	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glBindVertexArray(0);
 
 	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 3);
-
 	CHECK_GL_ERROR_DEBUG();
 }

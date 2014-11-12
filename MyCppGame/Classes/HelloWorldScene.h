@@ -23,6 +23,9 @@ public:
 	void onDraw();
 private:
 	CustomCommand _command;
+	GLuint vertexVAO;
+	GLuint vertexVBO;
+	GLuint colorVBO;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
