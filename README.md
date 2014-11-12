@@ -1,4 +1,1 @@
-cocos2dx_opengl
-===============
-
-基于Cocos2d-x学习OpenGL ES 2.0
+[基于Cocos2d-x学习OpenGL ES 2.0](http://cn.cocos2d-x.org/tutorial/lists?id=79)
