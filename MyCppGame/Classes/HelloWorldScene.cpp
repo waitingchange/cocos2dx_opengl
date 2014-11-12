@@ -51,11 +51,17 @@ bool HelloWorld::init()
 	float vertercies[] = {
 		-1, -1,
 		1, -1,
-		0, 1
+		-1, 1,
+		1, 1,
+		1, -1,
+		-1, 1
 	};
 	float color[] = {
-		0, 1, 0, 1,
 		1, 0, 0, 1,
+		0, 1, 0, 1,
+		0, 0, 1, 1,
+		1, 0, 0, 1,
+		0, 1, 0, 1,
 		0, 0, 1, 1
 	};
 
@@ -123,10 +129,10 @@ void HelloWorld::onDraw()
 	glProgram->setUniformsForBuiltins();
 
 	glBindVertexArray(vertexVAO);
-	glDrawArrays(GL_TRIANGLES, 0, 3);
+	glDrawArrays(GL_TRIANGLES, 0, 6);
 	glBindVertexArray(0);
 
-	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 3);
+	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 6);
 	CHECK_GL_ERROR_DEBUG();
 
     Director::getInstance()->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
