@@ -47,38 +47,28 @@ bool HelloWorld::init()
 	glGenBuffers(1, &vertexVBO);
 	glBindBuffer(GL_ARRAY_BUFFER, vertexVBO);
 
-	auto size = Director::getInstance()->getWinSize();
-	float vertercies[] = {
-		-1, -1,
-		1, -1,
-		-1, 1,
-		1, 1
-	};
-	float color[] = {
-		1, 0, 0, 1,
-		0, 1, 0, 1,
-		0, 0, 1, 1,
-		1, 0, 0, 1,
-		0, 1, 0, 1,
-		0, 0, 1, 1
+	typedef struct {
+		float Position[2];
+		float Color[4];
+	} Vertex;
+	Vertex data[] = {
+		{ { -1, -1 }, { 1, 0, 0, 1 } },
+		{ { 1, -1 }, { 0, 1, 0, 1 } },
+		{ { -1, 1 }, { 0, 0, 1, 1 } },
+		{ { 1, 1 }, { 1, 0, 0, 1 } },
 	};
 
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertercies), vertercies, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
 	//获取vertex attribute "a_position"的入口点
-	GLuint positionLocation = glGetAttribLocation(glProgram->getProgram(), "a_position");
 	//打开入a_position入口点
-	glEnableVertexAttribArray(positionLocation);
 	//传递顶点数据给a_position，注意最后一个参数是数组的偏移了。
-	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
-
-	//set for color
-	glGenBuffers(1, &colorVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, colorVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(color), color, GL_STATIC_DRAW);
+	GLuint positionLocation = glGetAttribLocation(glProgram->getProgram(), "a_position");
+	glEnableVertexAttribArray(positionLocation);
+	glVertexAttribPointer(positionLocation, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Position));
 
 	GLuint colorLocation = glGetAttribLocation(glProgram->getProgram(), "a_color");
 	glEnableVertexAttribArray(colorLocation);
-	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
+	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, Color));
 
     float uColor[] = {1.0, 1.0, 1.0, 1.0};
     GLuint uColorLocation = glGetUniformLocation(glProgram->getProgram(), "u_color");
