@@ -52,9 +52,7 @@ bool HelloWorld::init()
 		-1, -1,
 		1, -1,
 		-1, 1,
-		1, 1,
-		1, -1,
-		-1, 1
+		1, 1
 	};
 	float color[] = {
 		1, 0, 0, 1,
@@ -82,9 +80,17 @@ bool HelloWorld::init()
 	glEnableVertexAttribArray(colorLocation);
 	glVertexAttribPointer(colorLocation, 4, GL_FLOAT, GL_FALSE, 0, (GLvoid*)0);
 
-    float uColor[] = {1.0, 0.0, 0.0, 1.0};
+    float uColor[] = {1.0, 1.0, 1.0, 1.0};
     GLuint uColorLocation = glGetUniformLocation(glProgram->getProgram(), "u_color");
 	glUniform4fv(uColorLocation, 1, uColor);
+
+	GLbyte indices[] = {
+		0, 1, 2,
+		2, 3, 1
+	};
+	glGenBuffers(1, &indexVBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indexVBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
 	//for safty
 	glBindVertexArray(0);
@@ -129,7 +135,7 @@ void HelloWorld::onDraw()
 	glProgram->setUniformsForBuiltins();
 
 	glBindVertexArray(vertexVAO);
-	glDrawArrays(GL_TRIANGLES, 0, 6);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_BYTE, (GLvoid*)0);
 	glBindVertexArray(0);
 
 	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 6);

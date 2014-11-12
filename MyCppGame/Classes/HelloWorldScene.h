@@ -26,6 +26,7 @@ private:
 	GLuint vertexVAO;
 	GLuint vertexVBO;
 	GLuint colorVBO;
+	GLuint indexVBO;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
