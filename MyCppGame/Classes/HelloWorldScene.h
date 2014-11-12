@@ -2,6 +2,7 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
+USING_NS_CC;
 
 class HelloWorld : public cocos2d::Layer
 {
@@ -17,6 +18,11 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(HelloWorld);
+
+	virtual void visit(Renderer *renderer, const Mat4 &transform, bool transformUpdated) override;
+	void onDraw();
+private:
+	CustomCommand _command;
 };
 
 #endif // __HELLOWORLD_SCENE_H__
