@@ -49,9 +49,9 @@ bool HelloWorld::init()
 
 	auto size = Director::getInstance()->getWinSize();
 	float vertercies[] = {
-		0, 0,
-		size.width, 0,
-		size.width / 2, size.height
+		-1, -1,
+		1, -1,
+		0, 1
 	};
 	float color[] = {
 		0, 1, 0, 1,
@@ -113,6 +113,11 @@ void HelloWorld::visit(Renderer *renderer, const Mat4 &transform, bool transform
 
 void HelloWorld::onDraw()
 {
+    Director::getInstance()->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    Director::getInstance()->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
+    Director::getInstance()->pushMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    Director::getInstance()->loadIdentityMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+
 	auto glProgram = getGLProgram();
 	glProgram->use();
 	glProgram->setUniformsForBuiltins();
@@ -123,4 +128,7 @@ void HelloWorld::onDraw()
 
 	CC_INCREMENT_GL_DRAWN_BATCHES_AND_VERTICES(1, 3);
 	CHECK_GL_ERROR_DEBUG();
+
+    Director::getInstance()->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_PROJECTION);
+    Director::getInstance()->popMatrix(MATRIX_STACK_TYPE::MATRIX_STACK_MODELVIEW);
 }
