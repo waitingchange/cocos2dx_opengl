@@ -27,7 +27,17 @@ bool HelloWorld::init()
         return false;
     }
 
-	this->setGLProgram(GLProgramCache::getInstance()->getGLProgram(GLProgram::SHADER_NAME_POSITION_COLOR));
+	auto glProgram = GLProgramCache::getInstance()->getGLProgram("myShader");
+	if (glProgram == nullptr)
+	{
+		glProgram = new GLProgram();
+		glProgram->initWithFilenames("myShader.vert", "myShader.frag");
+		glProgram->link();
+		//set uniform locations
+		glProgram->updateUniforms();
+		GLProgramCache::getInstance()->addGLProgram(glProgram, "myShader");
+	}
+	this->setGLProgram(glProgram);
 
     return true;
 }
